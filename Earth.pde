@@ -1,3 +1,4 @@
+
 /**
  Earth and Moon
  Shapes3D library: http://www.lagers.org.uk/s3d4p/index.html
@@ -7,18 +8,21 @@ import shapes3d.utils.*;
 import shapes3d.animation.*;
 import shapes3d.*;
 
+//import processing.opengl.*;
+
 Ellipsoid sun, earth, moon, stars, venus;
 Box orbiter;
 
 boolean attached = true;
 float rotx = -0.3;
+float roty = -0.3;
 float distance = 0;
 
 public void setup() {
   size(1600, 1200, OPENGL);  
 
   // Create the sun
-  sun = new Ellipsoid(this, 26, 26);
+  sun = new Ellipsoid(this, 56, 56);
   sun.setTexture("sun.jpg");
   sun.setRadius(120);
   sun.moveTo(new PVector(0, 0, 0));
@@ -84,11 +88,15 @@ public void draw() {
   pushStyle();
   // Change the rotations before drawing
   camera(0, 0, 400+distance, 0, 0, 0, 0, 1, 0);
-  
-  if (mousePressed) 
-    if (mouseButton == LEFT)
+  noLights();
+  pointLight(255,  255,  255,  0,  0,  200); 
+//  if (mousePressed) 
+//    if (mouseButton == LEFT)
+if(abs(pmouseY-mouseY) > (.3)){
       rotx = constrain(rotx + (pmouseY-mouseY)*0.003, -HALF_PI, HALF_PI);
-    else distance = constrain(distance + (mouseY-pmouseY), -200, 200);  
+      roty = constrain(rotx + (pmouseX-mouseX)*0.003, -HALF_PI, HALF_PI);
+}      
+//    else distance = constrain(distance + (mouseY-pmouseY), -200, 200);  
   else
   { // do rotation before drawing
   
@@ -100,10 +108,11 @@ public void draw() {
   stars.rotateBy(0, 0, radians(0.02f));
   }
   rotateX (rotx);
+  rotateY (roty);
 
   background(0);
   pushMatrix();
-  lights();
+//  lights();
 
   sun.draw();
   stars.draw();
